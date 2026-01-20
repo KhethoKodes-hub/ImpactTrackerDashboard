@@ -27,7 +27,6 @@ L.Icon.Default.mergeOptions({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
-
 // ---------------------------
 // Your Google Sheets CSV URLs (already set)
 const METRICS_CSV_URL =
@@ -294,11 +293,11 @@ export default function ImpactDashboard() {
         {/* Stat cards */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           <StatCard label="SMEs Supported" value={loading ? "—" : stats.smesSupported} />
-          <StatCard label="SMEs Trained" value={loading ? "—" : stats.youthTrained} />
+          <StatCard label="Youth Trained" value={loading ? "—" : stats.youthTrained} />
           <StatCard label="Jobs Created" value={loading ? "—" : stats.jobsCreated} />
           
 <StatCard
- label="Youth Trained"
+ label="Businesses Funded"
   value={loading ? "—" : stats.businessesFunded}
  />
         </section>
