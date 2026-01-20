@@ -296,9 +296,10 @@ export default function ImpactDashboard() {
           <StatCard label="SMEs Supported" value={loading ? "—" : stats.smesSupported} />
           <StatCard label="SMEs Trained" value={loading ? "—" : stats.youthTrained} />
           <StatCard label="Jobs Created" value={loading ? "—" : stats.jobsCreated} />
+          
 <StatCard
-//   label="Businesses Funded"
-//   value={loading ? "—" : stats.businessesFunded}
+ label="Youth Trained"
+  value={loading ? "—" : stats.businessesFunded}
  />
         </section>
 
