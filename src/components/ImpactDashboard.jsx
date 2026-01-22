@@ -65,6 +65,30 @@ const REGION_ALIASES = {
   "mpumalanga": "Mpumalanga",
 };
 
+// Distinct colors for different metrics
+const CHART_COLORS = {
+  smes: {
+    primary: "#3B82F6", // Blue
+    light: "#93C5FD",
+    dark: "#1D4ED8"
+  },
+  youth: {
+    primary: "#10B981", // Emerald Green
+    light: "#6EE7B7",
+    dark: "#047857"
+  },
+  jobs: {
+    primary: "#F59E0B", // Amber
+    light: "#FCD34D",
+    dark: "#D97706"
+  },
+  businesses: {
+    primary: "#8B5CF6", // Violet
+    light: "#C4B5FD",
+    dark: "#7C3AED"
+  }
+};
+
 function normalizeKey(s) {
   if (!s && s !== 0) return "";
   return String(s).trim().toLowerCase().replace(/[_]+/g, " ").replace(/[-]+/g, " ").replace(/\s+/g, " ");
@@ -90,9 +114,14 @@ function StatCard({ label, value }) {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl"></div>
       <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-200/40 to-transparent translate-x-[-100%] translate-y-[-100%] group-hover:translate-x-[100%] group-hover:translate-y-[100%] transition-transform duration-1000 ease-out"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1200"></div>
-      <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-blue-600 group-hover:text-blue-700 transition-colors duration-500 relative z-10 group-hover:translate-y-[-2px] truncate">{label}</div>
-      <div className="text-2xl sm:text-3xl md:text-4xl font-black mt-3 sm:mt-4 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 bg-clip-text text-transparent group-hover:from-blue-700 group-hover:via-blue-600 group-hover:to-blue-500 transition-all duration-700 relative z-10 group-hover:scale-110 drop-shadow-lg">{value}</div>
-      <div className="mt-3 sm:mt-4 h-1 sm:h-1.5 w-12 sm:w-16 bg-gradient-to-r from-blue-500 to-blue-300 rounded-full group-hover:w-20 sm:group-hover:w-28 group-hover:h-2 group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-white transition-all duration-700 relative z-10 group-hover:shadow-lg group-hover:shadow-blue-400/70"></div>
+      {/* FIXED: Changed truncate to break-words and added min-height for label */}
+      <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-blue-600 group-hover:text-blue-700 transition-colors duration-500 relative z-10 group-hover:translate-y-[-2px] break-words min-h-[40px] flex items-center">
+        {label}
+      </div>
+      <div className="text-2xl sm:text-3xl md:text-4xl font-black mt-2 sm:mt-3 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 bg-clip-text text-transparent group-hover:from-blue-700 group-hover:via-blue-600 group-hover:to-blue-500 transition-all duration-700 relative z-10 group-hover:scale-110 drop-shadow-lg">
+        {value}
+      </div>
+      <div className="mt-2 sm:mt-3 h-1 sm:h-1.5 w-12 sm:w-16 bg-gradient-to-r from-blue-500 to-blue-300 rounded-full group-hover:w-20 sm:group-hover:w-28 group-hover:h-2 group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-white transition-all duration-700 relative z-10 group-hover:shadow-lg group-hover:shadow-blue-400/70"></div>
       <div className="absolute top-0 right-0 w-12 h-12 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-100/0 to-blue-200/0 group-hover:from-blue-100/50 group-hover:to-blue-200/30 rounded-bl-full transition-all duration-700"></div>
     </div>
   );
@@ -254,8 +283,9 @@ export default function ImpactDashboard() {
           </p>
         </header>
 
-        {/* Stats Cards - Mobile Responsive Grid */}
+        {/* Stats Cards - Mobile Responsive Grid with FIXED headings */}
         <section className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mb-8 sm:mb-12">
+          {/* FIXED: Changed label to full text with proper spacing */}
           <StatCard label="SMEs Supported" value={loading ? "—" : stats.smesSupported?.toLocaleString()} />
           <StatCard label="Youth Trained" value={loading ? "—" : stats.youthTrained?.toLocaleString()} />
           <StatCard label="Jobs Created" value={loading ? "—" : stats.jobsCreated?.toLocaleString()} />
@@ -264,7 +294,7 @@ export default function ImpactDashboard() {
 
         {/* Charts and Map Section - Mobile Responsive Layout */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
-          {/* Progress Timeline Chart */}
+          {/* Progress Timeline Chart with DISTINCT colors */}
           <div className="bg-white/95 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-xl border border-blue-100 transition-all duration-700 hover:shadow-[0_30px_80px_rgba(59,130,246,0.4)] hover:scale-[1.01] sm:hover:scale-[1.02] group relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-50/0 via-white/0 to-blue-100/0 group-hover:from-blue-50/60 group-hover:via-white/40 group-hover:to-blue-100/50 transition-all duration-700 rounded-3xl"></div>
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-100/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1200"></div>
@@ -309,32 +339,33 @@ export default function ImpactDashboard() {
                     height={36}
                     wrapperStyle={{ fontSize: isMobile ? '11px' : '12px', paddingBottom: '10px' }}
                   />
+                  {/* DISTINCT COLORS for each line */}
                   <Line 
                     type="monotone" 
                     dataKey="smes" 
                     name="SMEs Supported" 
-                    stroke="#2563eb" 
+                    stroke={CHART_COLORS.smes.primary} 
                     strokeWidth={isMobile ? 2 : 3} 
-                    dot={{ r: isMobile ? 3 : 5, fill: '#2563eb' }} 
-                    activeDot={{ r: isMobile ? 6 : 8, fill: '#1d4ed8' }} 
+                    dot={{ r: isMobile ? 3 : 5, fill: CHART_COLORS.smes.primary }} 
+                    activeDot={{ r: isMobile ? 6 : 8, fill: CHART_COLORS.smes.dark }} 
                   />
                   <Line 
                     type="monotone" 
                     dataKey="youth" 
                     name="Youth Trained" 
-                    stroke="#3b82f6" 
+                    stroke={CHART_COLORS.youth.primary} 
                     strokeWidth={isMobile ? 2 : 3} 
-                    dot={{ r: isMobile ? 3 : 5, fill: '#3b82f6' }} 
-                    activeDot={{ r: isMobile ? 6 : 8, fill: '#2563eb' }} 
+                    dot={{ r: isMobile ? 3 : 5, fill: CHART_COLORS.youth.primary }} 
+                    activeDot={{ r: isMobile ? 6 : 8, fill: CHART_COLORS.youth.dark }} 
                   />
                   <Line 
                     type="monotone" 
                     dataKey="jobs" 
                     name="Jobs Created" 
-                    stroke="#60a5fa" 
+                    stroke={CHART_COLORS.jobs.primary} 
                     strokeWidth={isMobile ? 2 : 3} 
-                    dot={{ r: isMobile ? 3 : 5, fill: '#60a5fa' }} 
-                    activeDot={{ r: isMobile ? 6 : 8, fill: '#3b82f6' }} 
+                    dot={{ r: isMobile ? 3 : 5, fill: CHART_COLORS.jobs.primary }} 
+                    activeDot={{ r: isMobile ? 6 : 8, fill: CHART_COLORS.jobs.dark }} 
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -416,7 +447,7 @@ export default function ImpactDashboard() {
             </div>
           </div>
 
-          {/* Program Performance Chart - Full Width */}
+          {/* Program Performance Chart - Full Width with DISTINCT colors */}
           <div className="bg-white/95 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-xl border border-blue-100 transition-all duration-700 hover:shadow-[0_30px_80px_rgba(59,130,246,0.4)] hover:scale-[1.01] lg:col-span-2 group relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-tl from-blue-50/0 via-white/0 to-blue-100/0 group-hover:from-blue-50/50 group-hover:via-white/30 group-hover:to-blue-100/60 transition-all duration-700 rounded-3xl"></div>
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-100/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1200"></div>
@@ -464,14 +495,30 @@ export default function ImpactDashboard() {
                     height={36}
                     wrapperStyle={{ fontSize: isMobile ? '11px' : '12px', paddingBottom: '10px' }}
                   />
-                  <Bar dataKey="smes" name="SMEs Supported" radius={[4, 4, 0, 0]}>
-                    {trendData.map((entry, index) => (<Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#2563eb' : '#60a5fa'} />))}
+                  {/* DISTINCT COLORS for each bar */}
+                  <Bar dataKey="smes" name="SMEs Supported" radius={[4, 4, 0, 0]} fill={CHART_COLORS.smes.primary}>
+                    {trendData.map((entry, index) => (
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={index % 2 === 0 ? CHART_COLORS.smes.primary : CHART_COLORS.smes.light} 
+                      />
+                    ))}
                   </Bar>
-                  <Bar dataKey="youth" name="Youth Trained" radius={[4, 4, 0, 0]}>
-                    {trendData.map((entry, index) => (<Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#3b82f6' : '#93c5fd'} />))}
+                  <Bar dataKey="youth" name="Youth Trained" radius={[4, 4, 0, 0]} fill={CHART_COLORS.youth.primary}>
+                    {trendData.map((entry, index) => (
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={index % 2 === 0 ? CHART_COLORS.youth.primary : CHART_COLORS.youth.light} 
+                      />
+                    ))}
                   </Bar>
-                  <Bar dataKey="jobs" name="Jobs Created" radius={[4, 4, 0, 0]}>
-                    {trendData.map((entry, index) => (<Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#1d4ed8' : '#60a5fa'} />))}
+                  <Bar dataKey="jobs" name="Jobs Created" radius={[4, 4, 0, 0]} fill={CHART_COLORS.jobs.primary}>
+                    {trendData.map((entry, index) => (
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={index % 2 === 0 ? CHART_COLORS.jobs.primary : CHART_COLORS.jobs.light} 
+                      />
+                    ))}
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
